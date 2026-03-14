@@ -1,210 +1,375 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Marketing Prompt Builder</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marketing Prompt Builder</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'DM Sans', sans-serif; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
 
-<script src="https://cdn.tailwindcss.com"></script>
+    body {
+      background: #000;
+      color: white;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    .gradient-bg {
+      position: relative;
+      min-height: 100vh;
+      background: #000;
+      overflow: hidden;
+    }
 
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    .gradient-bg::before {
+      content: "";
+      position: absolute;
+      inset: -20%;
+      background:
+        radial-gradient(circle at 18% 24%, rgba(249,115,22,0.18), transparent 28%),
+        radial-gradient(circle at 80% 18%, rgba(192,38,211,0.16), transparent 28%),
+        radial-gradient(circle at 55% 82%, rgba(139,92,246,0.14), transparent 28%);
+      animation: floatBg 16s ease-in-out infinite;
+      z-index: 0;
+    }
 
-<style>
+    @keyframes floatBg {
+      0%,100% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(-2%,2%) scale(1.05); }
+    }
 
-*{font-family:'DM Sans',sans-serif;}
-.mono{font-family:'JetBrains Mono',monospace;}
+    .glass {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.09);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 0 30px rgba(0,0,0,0.35);
+    }
 
-body{
-background:#000;
-color:white;
-min-height:100vh;
-}
+    .hero-ring {
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.05),
+        0 0 45px rgba(249,115,22,0.08),
+        0 0 75px rgba(192,38,211,0.08);
+    }
 
-.gradient{
-background:radial-gradient(circle at 20% 20%, rgba(249,115,22,0.15), transparent),
-radial-gradient(circle at 80% 80%, rgba(192,38,211,0.15), transparent);
-}
+    .input-custom,
+    .textarea-custom {
+      width: 100%;
+      background: rgba(0,0,0,0.62);
+      border: 1px solid rgba(249,115,22,0.22);
+      color: rgba(255,255,255,0.96);
+      transition: all 0.3s ease;
+    }
 
-.glass{
-background:rgba(255,255,255,0.04);
-border:1px solid rgba(255,255,255,0.08);
-backdrop-filter:blur(16px);
-}
+    .input-custom::placeholder,
+    .textarea-custom::placeholder {
+      color: rgba(255,255,255,0.34);
+    }
 
-input{
-background:rgba(0,0,0,0.6);
-border:1px solid rgba(255,255,255,0.1);
-}
+    .input-custom:focus,
+    .textarea-custom:focus {
+      outline: none;
+      border-color: rgba(249,115,22,0.55);
+      box-shadow: 0 0 24px rgba(249,115,22,0.22), 0 0 50px rgba(192,38,211,0.12);
+    }
 
-textarea{
-background:rgba(0,0,0,0.6);
-border:1px solid rgba(255,255,255,0.1);
-}
+    .btn-primary {
+      background: linear-gradient(135deg, #f97316 0%, #c026d3 100%);
+      transition: all 0.3s ease;
+      box-shadow: 0 0 22px rgba(249,115,22,0.25);
+    }
 
-button.primary{
-background:linear-gradient(135deg,#f97316,#c026d3);
-}
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(192,38,211,0.22);
+    }
 
-</style>
+    .btn-secondary {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.12);
+      transition: all 0.3s ease;
+    }
 
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.09);
+    }
+
+    .feature-pill {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .output-box {
+      background: linear-gradient(135deg, rgba(249,115,22,0.07), rgba(192,38,211,0.06));
+      border: 1px solid rgba(249,115,22,0.28);
+      box-shadow: 0 0 35px rgba(249,115,22,0.08);
+    }
+
+    .fade-in {
+      animation: fadeIn 0.4s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .toast {
+      animation: toastIn 0.25s ease, toastOut 0.25s ease 1.75s forwards;
+    }
+
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes toastOut {
+      from { opacity: 1; transform: translateY(0); }
+      to { opacity: 0; transform: translateY(-14px); }
+    }
+  </style>
 </head>
+<body>
+  <div class="gradient-bg">
+    <div class="relative z-10 max-w-5xl mx-auto px-6 py-10 md:py-14">
+      <div class="flex items-center justify-between gap-4 mb-8">
+        <a href="../index.html" class="text-white/60 hover:text-white text-sm">← Back to Homepage</a>
+        <div class="text-xs md:text-sm text-white/45">Tool 7 of 10</div>
+      </div>
 
-<body class="gradient">
+      <div class="text-center mb-8 md:mb-10">
+        <div class="inline-flex items-center gap-2 feature-pill rounded-full px-4 py-2 text-sm text-white/70 mb-5">
+          <span>Marketing Tool</span>
+          <span class="text-white/25">•</span>
+          <span>Build structured marketing prompts</span>
+        </div>
 
-<div class="max-w-4xl mx-auto px-6 py-12">
+        <h1 class="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-orange-400 via-white to-fuchsia-400 bg-clip-text text-transparent mb-4">
+          Marketing Prompt Builder
+        </h1>
 
-<a href="../index.html" class="text-white/60 hover:text-white text-sm">
-← Back to Homepage
-</a>
+        <p class="text-white/65 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
+          Fill in a few fields and generate a stronger marketing prompt for campaigns, strategy, messaging, and content planning.
+        </p>
+      </div>
 
-<h1 class="text-4xl font-bold mt-6 mb-2 bg-gradient-to-r from-orange-400 to-fuchsia-400 bg-clip-text text-transparent">
-Marketing Prompt Builder
-</h1>
+      <div class="grid lg:grid-cols-2 gap-6 items-start">
+        <div class="glass hero-ring rounded-3xl p-6 md:p-8">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-10 h-10 rounded-2xl bg-orange-500/15 border border-orange-400/25 flex items-center justify-center text-orange-300 font-bold">1</div>
+            <div>
+              <h2 class="text-xl font-bold">Enter your marketing details</h2>
+              <p class="text-white/55 text-sm">The more specific, the better the output.</p>
+            </div>
+          </div>
 
-<p class="text-white/60 mb-8">
-Build structured prompts for marketing strategies and campaigns.
-</p>
+          <div class="space-y-4">
+            <div>
+              <label for="product" class="block text-sm font-medium text-white/80 mb-2">
+                Product or service
+              </label>
+              <input
+                id="product"
+                type="text"
+                class="input-custom rounded-2xl px-4 py-4 text-base"
+                placeholder="Example: Organic skincare brand"
+              />
+            </div>
 
-<div class="glass rounded-2xl p-6 space-y-4">
+            <div>
+              <label for="audience" class="block text-sm font-medium text-white/80 mb-2">
+                Target audience
+              </label>
+              <input
+                id="audience"
+                type="text"
+                class="input-custom rounded-2xl px-4 py-4 text-base"
+                placeholder="Example: Women with melanin-rich skin"
+              />
+            </div>
 
-<div>
-<label class="text-sm text-white/70">Product / Service</label>
-<input id="product" class="w-full p-3 rounded-xl mt-1" placeholder="Example: Organic skincare brand">
-</div>
+            <div>
+              <label for="goal" class="block text-sm font-medium text-white/80 mb-2">
+                Marketing goal
+              </label>
+              <input
+                id="goal"
+                type="text"
+                class="input-custom rounded-2xl px-4 py-4 text-base"
+                placeholder="Example: Instagram marketing campaign"
+              />
+            </div>
 
-<div>
-<label class="text-sm text-white/70">Target Audience</label>
-<input id="audience" class="w-full p-3 rounded-xl mt-1" placeholder="Example: Women with melanin-rich skin">
-</div>
+            <div>
+              <label for="tone" class="block text-sm font-medium text-white/80 mb-2">
+                Tone or style
+              </label>
+              <input
+                id="tone"
+                type="text"
+                class="input-custom rounded-2xl px-4 py-4 text-base"
+                placeholder="Example: luxury, elegant, modern"
+              />
+            </div>
+          </div>
 
-<div>
-<label class="text-sm text-white/70">Marketing Goal</label>
-<input id="goal" class="w-full p-3 rounded-xl mt-1" placeholder="Example: Instagram marketing campaign">
-</div>
+          <button
+            id="buildBtn"
+            class="btn-primary w-full mt-6 py-4 rounded-2xl font-semibold text-white text-lg"
+          >
+            Build Marketing Prompt
+          </button>
 
-<button id="buildBtn" class="primary w-full py-4 rounded-xl font-semibold mt-4">
-Build Marketing Prompt
-</button>
+          <div class="grid grid-cols-2 gap-3 mt-4 text-sm text-white/55">
+            <div class="feature-pill rounded-2xl px-4 py-3">Campaign ideas</div>
+            <div class="feature-pill rounded-2xl px-4 py-3">Content direction</div>
+            <div class="feature-pill rounded-2xl px-4 py-3">Messaging help</div>
+            <div class="feature-pill rounded-2xl px-4 py-3">Actionable structure</div>
+          </div>
+        </div>
 
-</div>
+        <div id="resultSection" class="hidden fade-in">
+          <div class="output-box rounded-3xl p-6 md:p-8">
+            <div class="flex items-center gap-3 mb-6">
+              <div class="w-10 h-10 rounded-2xl bg-fuchsia-500/15 border border-fuchsia-400/25 flex items-center justify-center text-fuchsia-300 font-bold">2</div>
+              <div>
+                <h2 class="text-xl font-bold">Generated marketing prompt</h2>
+                <p class="text-white/55 text-sm">Copy it and use it in AI tools.</p>
+              </div>
+            </div>
 
-<div id="resultSection" class="hidden glass rounded-2xl p-6 mt-6">
+            <div
+              id="result"
+              class="mono text-sm leading-7 text-white/92 whitespace-pre-wrap bg-black/30 rounded-2xl p-4 border border-white/8"
+            ></div>
 
-<div class="flex justify-between items-center mb-4">
+            <div class="grid sm:grid-cols-3 gap-3 mt-6">
+              <button
+                id="copyBtn"
+                class="btn-secondary py-3 rounded-2xl font-medium text-white/90"
+              >
+                Copy Prompt
+              </button>
 
-<h2 class="font-bold text-lg text-orange-300">
-Marketing Prompt
-</h2>
+              <button
+                id="editBtn"
+                class="btn-secondary py-3 rounded-2xl font-medium text-white/90"
+              >
+                Edit Inputs
+              </button>
 
-<button id="copyBtn"
-class="text-sm px-4 py-2 rounded-lg border border-white/10">
-Copy
-</button>
+              <button
+                id="restartBtn"
+                class="btn-secondary py-3 rounded-2xl font-medium text-white/90"
+              >
+                Start Over
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-</div>
+    <div id="toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50">
+      <div class="toast bg-green-500/90 text-white px-5 py-3 rounded-full font-medium shadow-lg">
+        Copied to clipboard
+      </div>
+    </div>
+  </div>
 
-<div id="result" class="mono text-sm leading-7 whitespace-pre-wrap"></div>
+  <script>
+    const product = document.getElementById("product");
+    const audience = document.getElementById("audience");
+    const goal = document.getElementById("goal");
+    const tone = document.getElementById("tone");
 
-<div class="grid grid-cols-2 gap-3 mt-6">
+    const buildBtn = document.getElementById("buildBtn");
+    const result = document.getElementById("result");
+    const resultSection = document.getElementById("resultSection");
 
-<button id="editBtn"
-class="border border-white/10 py-3 rounded-xl">
-Edit
-</button>
+    const copyBtn = document.getElementById("copyBtn");
+    const restartBtn = document.getElementById("restartBtn");
+    const editBtn = document.getElementById("editBtn");
+    const toast = document.getElementById("toast");
 
-<button id="restartBtn"
-class="primary py-3 rounded-xl font-semibold">
-Start Over
-</button>
+    function buildPrompt() {
+      return `Act as an expert digital marketing strategist.
 
-</div>
-
-</div>
-
-</div>
-
-<script>
-
-const product=document.getElementById("product")
-const audience=document.getElementById("audience")
-const goal=document.getElementById("goal")
-
-const buildBtn=document.getElementById("buildBtn")
-
-const result=document.getElementById("result")
-const resultSection=document.getElementById("resultSection")
-
-const copyBtn=document.getElementById("copyBtn")
-const restartBtn=document.getElementById("restartBtn")
-const editBtn=document.getElementById("editBtn")
-
-function buildPrompt(){
-
-return `Act as an expert digital marketing strategist.
-
-Create a marketing strategy for the following:
+Create a marketing strategy and campaign prompt using the following details:
 
 Product or Service:
-${product.value}
+${product.value.trim()}
 
 Target Audience:
-${audience.value}
+${audience.value.trim()}
 
 Marketing Goal:
-${goal.value}
+${goal.value.trim()}
 
-Provide:
+Tone or Style:
+${tone.value.trim() || "Professional and persuasive"}
+
+Please provide:
 
 - campaign ideas
-- messaging strategies
+- core messaging angles
 - content ideas
-- platform strategies
-- growth tactics
+- platform recommendations
+- audience engagement strategies
+- practical growth tactics
 
-Make the strategy actionable and practical.`
+Make the response specific, actionable, and tailored to the product, audience, and goal.`;
+    }
 
-}
+    buildBtn.addEventListener("click", () => {
+      if (!product.value.trim() || !audience.value.trim() || !goal.value.trim()) {
+        alert("Please fill in Product or Service, Target Audience, and Marketing Goal.");
+        return;
+      }
 
-buildBtn.onclick=()=>{
+      result.textContent = buildPrompt();
+      resultSection.classList.remove("hidden");
+      resultSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
 
-if(!product.value || !audience.value || !goal.value){
-alert("Fill in all fields")
-return
-}
+    copyBtn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(result.textContent);
+      } catch (e) {
+        const temp = document.createElement("textarea");
+        temp.value = result.textContent;
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand("copy");
+        document.body.removeChild(temp);
+      }
 
-result.textContent=buildPrompt()
+      toast.classList.remove("hidden");
+      setTimeout(() => {
+        toast.classList.add("hidden");
+      }, 2000);
+    });
 
-resultSection.classList.remove("hidden")
+    restartBtn.addEventListener("click", () => {
+      product.value = "";
+      audience.value = "";
+      goal.value = "";
+      tone.value = "";
+      result.textContent = "";
+      resultSection.classList.add("hidden");
+      product.focus();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
 
-}
-
-copyBtn.onclick=()=>{
-
-navigator.clipboard.writeText(result.textContent)
-
-alert("Copied!")
-
-}
-
-restartBtn.onclick=()=>{
-
-product.value=""
-audience.value=""
-goal.value=""
-resultSection.classList.add("hidden")
-
-}
-
-editBtn.onclick=()=>{
-
-window.scrollTo({top:0,behavior:"smooth"})
-
-}
-
-</script>
-
+    editBtn.addEventListener("click", () => {
+      product.focus();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  </script>
 </body>
 </html>

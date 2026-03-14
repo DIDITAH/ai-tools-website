@@ -1,107 +1,338 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prompt Refiner</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prompt Refiner</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'DM Sans', sans-serif; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
 
-<script src="https://cdn.tailwindcss.com"></script>
+    body {
+      background: #000;
+      color: white;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    .gradient-bg {
+      position: relative;
+      min-height: 100vh;
+      background: #000;
+      overflow: hidden;
+    }
 
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    .gradient-bg::before {
+      content: "";
+      position: absolute;
+      inset: -20%;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(249,115,22,0.18), transparent 28%),
+        radial-gradient(circle at 80% 20%, rgba(192,38,211,0.16), transparent 28%),
+        radial-gradient(circle at 55% 80%, rgba(139,92,246,0.14), transparent 28%);
+      animation: floatBg 15s ease-in-out infinite;
+      z-index: 0;
+    }
 
-<style>
+    @keyframes floatBg {
+      0%,100% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(-2%,2%) scale(1.05); }
+    }
 
-body{
-font-family:'DM Sans',sans-serif;
-background:#000;
-color:white;
-min-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-padding:40px;
-}
+    .glass {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.09);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 0 30px rgba(0,0,0,0.35);
+    }
 
-.card{
-background:rgba(255,255,255,0.05);
-border:1px solid rgba(255,255,255,0.1);
-backdrop-filter:blur(15px);
-}
+    .textarea-custom {
+      background: rgba(0,0,0,0.55);
+      border: 1px solid rgba(249,115,22,0.22);
+      transition: all 0.3s ease;
+    }
 
-textarea{
-background:rgba(0,0,0,0.6);
-border:1px solid rgba(255,255,255,0.15);
-}
+    .textarea-custom:focus {
+      outline: none;
+      border-color: rgba(249,115,22,0.55);
+      box-shadow: 0 0 24px rgba(249,115,22,0.22), 0 0 50px rgba(192,38,211,0.12);
+    }
 
-button{
-background:linear-gradient(135deg,#f97316,#c026d3);
-}
+    .btn-primary {
+      background: linear-gradient(135deg, #f97316 0%, #c026d3 100%);
+      transition: all 0.3s ease;
+      box-shadow: 0 0 22px rgba(249,115,22,0.25);
+    }
 
-</style>
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(192,38,211,0.22);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.12);
+      transition: all 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.09);
+    }
+
+    .output-box {
+      background: linear-gradient(135deg, rgba(249,115,22,0.07), rgba(192,38,211,0.06));
+      border: 1px solid rgba(249,115,22,0.28);
+      box-shadow: 0 0 35px rgba(249,115,22,0.08);
+    }
+
+    .fade-in {
+      animation: fadeIn 0.4s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .feature-pill {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .toast {
+      animation: toastIn 0.25s ease, toastOut 0.25s ease 1.75s forwards;
+    }
+
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes toastOut {
+      from { opacity: 1; transform: translateY(0); }
+      to { opacity: 0; transform: translateY(-14px); }
+    }
+
+    .hero-ring {
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.05),
+        0 0 45px rgba(249,115,22,0.08),
+        0 0 75px rgba(192,38,211,0.08);
+    }
+  </style>
 </head>
-
 <body>
+  <div class="gradient-bg">
+    <div class="relative z-10 max-w-5xl mx-auto px-6 py-10 md:py-14">
+      <div class="flex items-center justify-between gap-4 mb-8">
+        <a href="../index.html" class="text-white/60 hover:text-white text-sm">← Back to Homepage</a>
+        <div class="text-xs md:text-sm text-white/45">Tool 1 of 10</div>
+      </div>
 
-<div class="max-w-2xl w-full card rounded-2xl p-8">
+      <div class="text-center mb-8 md:mb-10">
+        <div class="inline-flex items-center gap-2 feature-pill rounded-full px-4 py-2 text-sm text-white/70 mb-5">
+          <span>Prompt Tool</span>
+          <span class="text-white/25">•</span>
+          <span>Refine messy ideas instantly</span>
+        </div>
 
-<h1 class="text-3xl font-bold mb-4 text-center">
-Prompt Refiner
-</h1>
+        <h1 class="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-orange-400 via-white to-fuchsia-400 bg-clip-text text-transparent mb-4">
+          Prompt Refiner
+        </h1>
 
-<p class="text-white/70 mb-6 text-center">
-Turn messy ideas into cleaner, stronger prompts.
-</p>
+        <p class="text-white/65 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
+          Turn rough thoughts into a cleaner, clearer prompt — then upgrade it into a stronger Mega Prompt in one click.
+        </p>
+      </div>
 
-<textarea id="input"
-class="w-full p-4 rounded-xl h-40 mb-4"
-placeholder="Type your rough idea or messy prompt here..."></textarea>
+      <div class="grid lg:grid-cols-2 gap-6 items-start">
+        <div class="glass hero-ring rounded-3xl p-6 md:p-8">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-10 h-10 rounded-2xl bg-orange-500/15 border border-orange-400/25 flex items-center justify-center text-orange-300 font-bold">1</div>
+            <div>
+              <h2 class="text-xl font-bold">Enter your rough prompt</h2>
+              <p class="text-white/55 text-sm">Messy, incomplete, casual — it’s okay.</p>
+            </div>
+          </div>
 
-<button onclick="refinePrompt()"
-class="w-full py-4 rounded-xl font-semibold">
-Refine Prompt
-</button>
+          <label for="brainstorm" class="block text-sm font-medium text-white/80 mb-3">
+            Your rough prompt
+          </label>
 
-<div id="output"
-class="mt-6 p-4 rounded-xl bg-orange-500/10 border border-orange-400/30 hidden">
-</div>
+          <textarea
+            id="brainstorm"
+            class="textarea-custom mono w-full h-56 rounded-2xl px-4 py-4 text-white placeholder-white/30 resize-none text-sm"
+            placeholder="Example: i want a prompt for marketing my skincare brand to women in their 20s but i want it to sound luxury and classy and target instagram too"
+          ></textarea>
 
-</div>
+          <button
+            id="refineBtn"
+            class="btn-primary w-full mt-6 py-4 rounded-2xl font-semibold text-white text-lg"
+            disabled
+          >
+            Refine My Prompt
+          </button>
 
-<script>
+          <div class="grid grid-cols-2 gap-3 mt-4 text-sm text-white/55">
+            <div class="feature-pill rounded-2xl px-4 py-3">Clearer wording</div>
+            <div class="feature-pill rounded-2xl px-4 py-3">Stronger structure</div>
+            <div class="feature-pill rounded-2xl px-4 py-3">Better readability</div>
+            <div class="feature-pill rounded-2xl px-4 py-3">Ready for next step</div>
+          </div>
+        </div>
 
-function refinePrompt(){
+        <div id="resultSection" class="hidden fade-in">
+          <div class="output-box rounded-3xl p-6 md:p-8">
+            <div class="flex items-center gap-3 mb-6">
+              <div class="w-10 h-10 rounded-2xl bg-fuchsia-500/15 border border-fuchsia-400/25 flex items-center justify-center text-fuchsia-300 font-bold">2</div>
+              <div>
+                <h2 class="text-xl font-bold">Your refined prompt</h2>
+                <p class="text-white/55 text-sm">Cleaner, sharper, more usable.</p>
+              </div>
+            </div>
 
-let text=document.getElementById("input").value.trim()
+            <div
+              id="resultText"
+              class="mono text-sm leading-7 text-white/90 whitespace-pre-wrap bg-black/25 rounded-2xl p-4 border border-white/8"
+            ></div>
 
-if(text===""){
-alert("Please enter something first.")
-return
-}
+            <div class="grid sm:grid-cols-3 gap-3 mt-6">
+              <button
+                id="copyBtn"
+                class="btn-secondary py-3 rounded-2xl font-medium text-white/90"
+              >
+                Copy Prompt
+              </button>
 
-let cleaned=text
-.replace(/\b(um|uh|like|basically|actually|just|really|very)\b/gi,"")
-.replace(/\s+/g," ")
-.trim()
+              <button
+                id="editBtn"
+                class="btn-secondary py-3 rounded-2xl font-medium text-white/90"
+              >
+                Edit Original
+              </button>
 
-cleaned=cleaned.charAt(0).toUpperCase()+cleaned.slice(1)
+              <button
+                id="restartBtn"
+                class="btn-secondary py-3 rounded-2xl font-medium text-white/90"
+              >
+                Start Over
+              </button>
+            </div>
 
-if(!/[.!?]$/.test(cleaned)){
-cleaned+="."
-}
+            <button
+              id="megaBtn"
+              class="btn-primary w-full mt-5 py-4 rounded-2xl font-semibold text-white text-lg"
+            >
+              Convert to Mega Prompt →
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-cleaned+=" Please provide a clear and detailed response."
+    <div id="toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50">
+      <div class="toast bg-green-500/90 text-white px-5 py-3 rounded-full font-medium shadow-lg">
+        Copied to clipboard
+      </div>
+    </div>
+  </div>
 
-let output=document.getElementById("output")
+  <script>
+    const brainstorm = document.getElementById("brainstorm");
+    const refineBtn = document.getElementById("refineBtn");
+    const resultSection = document.getElementById("resultSection");
+    const resultText = document.getElementById("resultText");
+    const copyBtn = document.getElementById("copyBtn");
+    const editBtn = document.getElementById("editBtn");
+    const restartBtn = document.getElementById("restartBtn");
+    const megaBtn = document.getElementById("megaBtn");
+    const toast = document.getElementById("toast");
 
-output.innerText=cleaned
-output.classList.remove("hidden")
+    brainstorm.addEventListener("input", () => {
+      refineBtn.disabled = brainstorm.value.trim().length === 0;
+    });
 
-}
+    function refinePromptText(input) {
+      let text = input.trim();
 
-</script>
+      text = text
+        .replace(/\b(um|uh|like|basically|actually|just|really|very|you know)\b/gi, "")
+        .replace(/\s+/g, " ")
+        .trim();
 
+      if (text.length > 0) {
+        text = text.charAt(0).toUpperCase() + text.slice(1);
+      }
+
+      if (!/[.!?]$/.test(text)) {
+        text += ".";
+      }
+
+      if (!/clear|detailed|specific|structured/i.test(text)) {
+        text += " Please provide a clear, specific, and detailed response.";
+      }
+
+      return text;
+    }
+
+    refineBtn.addEventListener("click", () => {
+      const input = brainstorm.value.trim();
+      if (!input) return;
+
+      const refined = refinePromptText(input);
+      resultText.textContent = refined;
+      resultSection.classList.remove("hidden");
+      resultSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    copyBtn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(resultText.textContent);
+      } catch (e) {
+        const temp = document.createElement("textarea");
+        temp.value = resultText.textContent;
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand("copy");
+        document.body.removeChild(temp);
+      }
+
+      toast.classList.remove("hidden");
+      setTimeout(() => {
+        toast.classList.add("hidden");
+      }, 2000);
+    });
+
+    editBtn.addEventListener("click", () => {
+      brainstorm.focus();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    restartBtn.addEventListener("click", () => {
+      brainstorm.value = "";
+      resultText.textContent = "";
+      resultSection.classList.add("hidden");
+      refineBtn.disabled = true;
+      brainstorm.focus();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    megaBtn.addEventListener("click", () => {
+      const refined = resultText.textContent.trim();
+      if (!refined) return;
+
+      const encoded = encodeURIComponent(refined);
+      window.location.href = `mega-prompt-builder.html?prompt=${encoded}`;
+    });
+  </script>
 </body>
 </html>

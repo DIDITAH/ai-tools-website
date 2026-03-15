@@ -31,7 +31,7 @@
       position: absolute;
       inset: -20%;
       background:
-        radial-gradient(circle at 20% 30%, rgba(249, 115, 22, 0.18), transparent 30%),
+        radial-gradient(circle at 20% 20%, rgba(249, 115, 22, 0.18), transparent 30%),
         radial-gradient(circle at 80% 20%, rgba(192, 38, 211, 0.16), transparent 30%),
         radial-gradient(circle at 50% 80%, rgba(139, 92, 246, 0.14), transparent 30%);
       animation: floatBg 16s ease-in-out infinite;
@@ -74,6 +74,22 @@
       box-shadow: 0 12px 35px rgba(192, 38, 211, 0.22);
     }
 
+    .secondary-button {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: all 0.3s ease;
+    }
+
+    .secondary-button:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.16);
+    }
+
+    .section-badge {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
     .fade-up {
       animation: fadeUp 0.8s ease forwards;
       opacity: 0;
@@ -90,6 +106,13 @@
         transform: translateY(0);
       }
     }
+
+    .category-title {
+      background: linear-gradient(90deg, rgba(249,115,22,0.9), rgba(192,38,211,0.9));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
   </style>
 </head>
 <body>
@@ -99,41 +122,72 @@
         <div class="text-xl md:text-2xl font-extrabold bg-gradient-to-r from-orange-400 to-fuchsia-400 bg-clip-text text-transparent">
           AI Prompt Tools
         </div>
+
         <nav class="hidden md:flex items-center gap-6 text-sm text-white/70">
           <a href="#tools" class="hover:text-white">Tools</a>
+          <a href="#categories" class="hover:text-white">Categories</a>
           <a href="#about" class="hover:text-white">About</a>
         </nav>
       </header>
 
       <section class="max-w-7xl mx-auto px-6 pt-10 pb-16 md:pt-16 md:pb-24 text-center">
         <div class="max-w-4xl mx-auto">
-          <p class="fade-up text-sm uppercase tracking-[0.25em] text-orange-300/80 mb-4">
-            Free AI Tool Platform
-          </p>
+          <div class="fade-up inline-flex items-center gap-2 section-badge rounded-full px-4 py-2 text-sm text-white/75 mb-5">
+            <span>10 Free Tools Live</span>
+            <span class="text-white/25">•</span>
+            <span>Prompt, content, and marketing tools</span>
+          </div>
+
           <h1 class="fade-up fade-up-delay-1 text-4xl md:text-6xl font-extrabold leading-tight bg-gradient-to-r from-orange-400 via-white to-fuchsia-400 bg-clip-text text-transparent">
-            Turn Ideas Into Powerful Prompts, Content, and Marketing Assets
+            Free AI Prompt, Content, and Marketing Tools in One Place
           </h1>
-          <p class="fade-up fade-up-delay-2 mt-6 text-lg md:text-xl text-white/70 max-w-2xl mx-auto leading-relaxed">
-            A growing collection of free browser-based AI prompt tools designed to help creators,
-            marketers, writers, and business owners work faster.
+
+          <p class="fade-up fade-up-delay-2 mt-6 text-lg md:text-xl text-white/70 max-w-3xl mx-auto leading-relaxed">
+            Explore a growing collection of free browser-based tools designed to help you refine prompts,
+            generate content ideas, build better marketing prompts, and create stronger headlines, hooks, and outlines.
           </p>
+
           <div class="fade-up fade-up-delay-3 mt-8 flex flex-col sm:flex-row gap-4 justify-center">
             <a href="#tools" class="hero-button px-8 py-4 rounded-2xl font-semibold text-white">
-              Explore Tools
+              Explore All Tools
             </a>
-            <a href="#about" class="glass px-8 py-4 rounded-2xl font-semibold text-white/85">
+            <a href="#about" class="secondary-button px-8 py-4 rounded-2xl font-semibold text-white/90">
               Learn More
             </a>
           </div>
         </div>
       </section>
 
+      <section id="categories" class="max-w-7xl mx-auto px-6 pb-8">
+        <div class="grid md:grid-cols-3 gap-4">
+          <div class="glass rounded-3xl p-6">
+            <h3 class="text-xl font-bold category-title mb-2">Prompt Tools</h3>
+            <p class="text-white/65 text-sm leading-7">
+              Refine, expand, simplify, and upgrade prompts into more structured outputs.
+            </p>
+          </div>
+
+          <div class="glass rounded-3xl p-6">
+            <h3 class="text-xl font-bold category-title mb-2">Content Tools</h3>
+            <p class="text-white/65 text-sm leading-7">
+              Generate blog ideas, headlines, YouTube titles, and content outlines quickly.
+            </p>
+          </div>
+
+          <div class="glass rounded-3xl p-6">
+            <h3 class="text-xl font-bold category-title mb-2">Marketing Tools</h3>
+            <p class="text-white/65 text-sm leading-7">
+              Build stronger marketing prompts and attention-grabbing hooks for campaigns and posts.
+            </p>
+          </div>
+        </div>
+      </section>
+
       <section id="tools" class="max-w-7xl mx-auto px-6 pb-20">
         <div class="mb-10">
-          <h2 class="text-3xl md:text-4xl font-bold text-white mb-3">Starter Tools</h2>
-          <p class="text-white/65 max-w-2xl">
-            These are the first 10 tools in your platform. For now, only the homepage is live.
-            We will add each tool page one by one.
+          <h2 class="text-3xl md:text-4xl font-bold text-white mb-3">All Tools</h2>
+          <p class="text-white/65 max-w-3xl">
+            Click any tool below to open it. All 10 tools are live and ready to use.
           </p>
         </div>
 
@@ -141,61 +195,81 @@
           <a href="tools/prompt-refiner.html" class="tool-card glass rounded-3xl p-6 block">
             <div class="text-orange-300 text-sm mb-2">Prompt Tool</div>
             <h3 class="text-xl font-bold mb-2">Prompt Refiner</h3>
-            <p class="text-white/65 text-sm">Clean up messy ideas and turn them into clearer, stronger prompts.</p>
+            <p class="text-white/65 text-sm leading-7">
+              Clean up messy ideas and turn them into clearer, stronger prompts.
+            </p>
           </a>
 
           <a href="tools/mega-prompt-builder.html" class="tool-card glass rounded-3xl p-6 block">
             <div class="text-fuchsia-300 text-sm mb-2">Prompt Tool</div>
             <h3 class="text-xl font-bold mb-2">Mega Prompt Builder</h3>
-            <p class="text-white/65 text-sm">Transform a simple request into a more detailed expert-level prompt.</p>
+            <p class="text-white/65 text-sm leading-7">
+              Transform a simple prompt into a more advanced expert-style prompt.
+            </p>
           </a>
 
           <a href="tools/prompt-expander.html" class="tool-card glass rounded-3xl p-6 block">
             <div class="text-violet-300 text-sm mb-2">Prompt Tool</div>
             <h3 class="text-xl font-bold mb-2">Prompt Expander</h3>
-            <p class="text-white/65 text-sm">Expand short prompts into richer, more descriptive instructions.</p>
+            <p class="text-white/65 text-sm leading-7">
+              Expand short prompts into richer, more descriptive instructions.
+            </p>
           </a>
 
           <a href="tools/prompt-simplifier.html" class="tool-card glass rounded-3xl p-6 block">
             <div class="text-orange-300 text-sm mb-2">Prompt Tool</div>
             <h3 class="text-xl font-bold mb-2">Prompt Simplifier</h3>
-            <p class="text-white/65 text-sm">Rewrite long or confusing prompts into something simpler and cleaner.</p>
-           </a>
+            <p class="text-white/65 text-sm leading-7">
+              Rewrite long or confusing prompts into something shorter and clearer.
+            </p>
+          </a>
 
           <a href="tools/blog-idea-generator.html" class="tool-card glass rounded-3xl p-6 block">
             <div class="text-fuchsia-300 text-sm mb-2">Content Tool</div>
             <h3 class="text-xl font-bold mb-2">Blog Idea Generator</h3>
-            <p class="text-white/65 text-sm">Generate blog post ideas and angles for any niche or topic.</p>
+            <p class="text-white/65 text-sm leading-7">
+              Generate blog post ideas and content angles for any topic or niche.
+            </p>
           </a>
 
           <a href="tools/headline-generator.html" class="tool-card glass rounded-3xl p-6 block">
             <div class="text-violet-300 text-sm mb-2">Content Tool</div>
             <h3 class="text-xl font-bold mb-2">Headline Generator</h3>
-            <p class="text-white/65 text-sm">Create stronger blog, article, and landing page headlines quickly.</p>
+            <p class="text-white/65 text-sm leading-7">
+              Create stronger headlines for blogs, articles, and landing pages.
+            </p>
           </a>
 
           <a href="tools/marketing-prompt-builder.html" class="tool-card glass rounded-3xl p-6 block">
             <div class="text-orange-300 text-sm mb-2">Marketing Tool</div>
             <h3 class="text-xl font-bold mb-2">Marketing Prompt Builder</h3>
-            <p class="text-white/65 text-sm">Create prompts for ads, campaigns, product launches, and audience research.</p>
+            <p class="text-white/65 text-sm leading-7">
+              Build structured prompts for marketing campaigns, messaging, and strategy.
+            </p>
           </a>
 
           <a href="tools/hook-generator.html" class="tool-card glass rounded-3xl p-6 block">
             <div class="text-fuchsia-300 text-sm mb-2">Marketing Tool</div>
             <h3 class="text-xl font-bold mb-2">Hook Generator</h3>
-            <p class="text-white/65 text-sm">Generate scroll-stopping hooks for social media, ads, and content.</p>
+            <p class="text-white/65 text-sm leading-7">
+              Generate attention-grabbing hooks for posts, ads, videos, and social content.
+            </p>
           </a>
 
           <a href="tools/youtube-title-generator.html" class="tool-card glass rounded-3xl p-6 block">
             <div class="text-violet-300 text-sm mb-2">Video Tool</div>
             <h3 class="text-xl font-bold mb-2">YouTube Title Generator</h3>
-            <p class="text-white/65 text-sm">Create clickable titles for YouTube videos in different styles.</p>
+            <p class="text-white/65 text-sm leading-7">
+              Create clearer and more clickable YouTube title ideas for your videos.
+            </p>
           </a>
 
           <a href="tools/content-outline-generator.html" class="tool-card glass rounded-3xl p-6 block sm:col-span-2 lg:col-span-1">
             <div class="text-orange-300 text-sm mb-2">Content Tool</div>
             <h3 class="text-xl font-bold mb-2">Content Outline Generator</h3>
-            <p class="text-white/65 text-sm">Generate structured outlines for blog posts, videos, podcasts, and guides.</p>
+            <p class="text-white/65 text-sm leading-7">
+              Generate structured outlines for blogs, videos, podcasts, and guides.
+            </p>
           </a>
         </div>
       </section>
@@ -203,11 +277,28 @@
       <section id="about" class="max-w-7xl mx-auto px-6 pb-24">
         <div class="glass rounded-3xl p-8 md:p-12">
           <h2 class="text-2xl md:text-3xl font-bold mb-4">About This Platform</h2>
-          <p class="text-white/70 leading-relaxed max-w-3xl">
-            This website is being built as a modern collection of free AI prompt and content tools.
-            Each tool will live on its own page, and the whole platform can be hosted for free on GitHub Pages or Netlify.
-            This homepage is the foundation.
+          <p class="text-white/70 leading-relaxed max-w-4xl">
+            AI Prompt Tools is a growing collection of free tools designed to help creators, marketers,
+            writers, and business owners work faster. Each tool runs directly in the browser, which means
+            the platform can stay lightweight, easy to use, and simple to expand over time.
           </p>
+
+          <div class="grid md:grid-cols-3 gap-4 mt-8">
+            <div class="section-badge rounded-2xl p-4">
+              <div class="text-white font-semibold mb-1">10 Tools Live</div>
+              <div class="text-white/60 text-sm">Your first tool collection is already active.</div>
+            </div>
+
+            <div class="section-badge rounded-2xl p-4">
+              <div class="text-white font-semibold mb-1">Free to Host</div>
+              <div class="text-white/60 text-sm">Built to run on GitHub Pages or Netlify.</div>
+            </div>
+
+            <div class="section-badge rounded-2xl p-4">
+              <div class="text-white font-semibold mb-1">Ready to Grow</div>
+              <div class="text-white/60 text-sm">You can keep adding tools until you reach 50+.</div>
+            </div>
+          </div>
         </div>
       </section>
     </div>
